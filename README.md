@@ -1,75 +1,42 @@
 # hello-world
 
-**bold**
-*italic*
-[link to Google!](http://google.com)
+name: Python package
 
-# This is an <h1> tag
-## This is an <h2> tag
-###### This is an <h6> tag
-  
-*This text will be italic*
-_This will also be italic_
+on: [push]
 
-**This text will be bold**
-__This will also be bold__
-_You **can** combine them_
+jobs:
+  build:
 
-* Item 1
-* Item 2
-  * Item 2a
-  * Item 2b
-
-1. Item 1
-1. Item 2
-1. Item 3
-   1. Item 3a
-   1. Item 3b
-
-![GitHub Logo](/images/logo.png)
-Format: ![Alt Text](url)
-
-http://github.com - automatic!
-[GitHub](http://github.com)
-
-As Kanye West said:
-
-> We're living the future so
-> the present is our past.
-
-I think you should use an
-`<addr>` element here instead.
-
-```javascript
-function fancyAlert(arg) {
-  if(arg) {
-    $.facebox({div:'#foo'})
-  }
-}
-```
-
-    function fancyAlert(arg) {
-      if(arg) {
-        $.facebox({div:'#foo'})
-      }
-    }
+    runs-on: ubuntu-latest
+    dalala = 1
     
+    print (dalala)
     
-def foo():
-    if not bar:
-        return True
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        pytest
         
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
-
-
-readme_edits
-This is my first Repository Code and im actually a brasilian.
-Trying hard to learn a language and how to code.
-Hope you guys like my work here but it will be just for fun.
-See yah.
 =======
 First Repository
 main
